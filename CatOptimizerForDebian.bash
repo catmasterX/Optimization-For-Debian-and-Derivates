@@ -134,11 +134,6 @@ echo "2G" | sudo tee /sys/block/zram0/disksize
 sudo mkswap /dev/zram0
 sudo swapon /dev/zram0
 
-sysctl -w vm.zswap.enabled=1
-sysctl -w vm.zswap.compressor=lz4  # Puedes cambiar el compresor según tus preferencias
-sysctl -w vm.zswap.max_pool_percent=25
-
-echo "zswap.enabled=1" | sudo tee -a /etc/default/grub
 sudo update-grub
 
 echo "Optimización completada."
