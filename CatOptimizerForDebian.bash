@@ -69,10 +69,6 @@ done
 echo "Liberando memoria RAM..."
 sync; echo 3 > /proc/sys/vm/drop_caches
 
-# Establecer el rendimiento de la CPU al modo "performance" (requiere cpufreq-utils)
-echo "Estableciendo el rendimiento de la CPU al modo 'performance'..."
-cpufreq-set -r -g performance
-
 # Desactivar servicios innecesarios (ajusta según tu distribución)
 # systemctl disable <nombre_del_servicio>
 
@@ -131,22 +127,16 @@ sudo apt upgrade
 sudo apt install xserver-xorg-video-amdgpu mesa-vulkan-drivers mesa-opencl-icd
 sudo apt install xserver-xorg-video-intel mesa-vulkan-drivers mesa-opencl-icd
 
-# Función para habilitar zram
-habilitar_zram() {
-    echo "Habilitando zram..."
-    sudo modprobe zram
-    echo "zstd" | sudo tee /sys/block/zram0/comp_algorithm
-    echo "2G" | sudo tee /sys/block/zram0/disksize
-    sudo mkswap /dev/zram0
-    sudo swapon /dev/zram0
-}
+echo "Habilitando zram..."
+sudo modprobe zram
+echo "zstd" | sudo tee /sys/block/zram0/comp_algorithm
+echo "2G" | sudo tee /sys/block/zram0/disksize
+sudo mkswap /dev/zram0
+sudo swapon /dev/zram0
 
-# Desactivar la grabación de sesiones (si no es necesario)
-echo "Desactivando la grabación de sesiones..."
-systemctl disable auditd
-
-# Llama a la función para habilitar zram
-habilitar_zram
+sysctl -w vm.zswap.enabled=1
+sysctl -w vm.zswap.compressor=lz4  # Puedes cambiar el compresor según tus preferencias
+sysctl -w vm.zswap.max_pool_percent=25
 
 echo "zswap.enabled=1" | sudo tee -a /etc/default/grub
 sudo update-grub
