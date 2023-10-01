@@ -134,6 +134,9 @@ echo "2G" | sudo tee /sys/block/zram0/disksize
 sudo mkswap /dev/zram0
 sudo swapon /dev/zram0
 
+echo high > /sys/class/drm/card0/device/power_dpm_force_performance_level
+echo high > /sys/class/drm/card1/device/power_dpm_force_performance_level
+
 sudo update-grub
 
 echo "Optimización completada."
