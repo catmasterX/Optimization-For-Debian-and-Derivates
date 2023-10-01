@@ -134,10 +134,31 @@ echo "2G" | sudo tee /sys/block/zram0/disksize
 sudo mkswap /dev/zram0
 sudo swapon /dev/zram0
 
-echo high > /sys/class/drm/card0/device/power_dpm_force_performance_level
-echo high > /sys/class/drm/card1/device/power_dpm_force_performance_level
-echo "performance" > /sys/devices/system/cpu/cpu*/cpufreq/scaling_governor
-sudo sysctl -w kernel.preempt_lowlatency=1
+#!/bin/bash
+
+# Configurar gobernador del CPU en máximo rendimiento
+for cpu in /sys/devices/system/cpu/cpu*/cpufreq/scaling_governor; do
+    echo "performance" > "$cpu"
+done
+
+# Configurar preemption model en baja latencia
+sysctl -w kernel.preempt_lowlatency=1
+
+# Configurar performance level para tarjetas de video
+echo "Configurando performance level para tarjetas de video..."
+echo "high" > /sys/class/drm/card0/device/power_dpm_force_performance_level
+echo "high" > /sys/class/drm/card1/device/power_dpm_force_performance_level
+
+
+# Guardar el gobernador en máximo rendimiento en archivo de inicio
+echo -e "# Configurar el gobernador del CPU en máximo rendimiento\nfor cpu in /sys/devices/system/cpu/cpu*/cpufreq/scaling_governor; do\necho \"performance\" > \"\$cpu\"\ndone" | sudo tee -a /etc/rc.local
+
+# Guardar el preemption model en baja latencia en archivo de sysctl
+echo "kernel.preempt_lowlatency=1" | sudo tee -a /etc/sysctl.d/99-lowlatency.conf
+
+# Guardar la configuración del performance level para tarjetas de video
+echo "echo high > /sys/class/drm/card0/device/power_dpm_force_performance_level" | sudo tee -a /etc/rc.local
+echo "echo high > /sys/class/drm/card1/device/power_dpm_force_performance_level" | sudo tee -a /etc/rc.local
 
 sudo update-grub
 
