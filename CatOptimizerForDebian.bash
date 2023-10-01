@@ -136,6 +136,8 @@ sudo swapon /dev/zram0
 
 echo high > /sys/class/drm/card0/device/power_dpm_force_performance_level
 echo high > /sys/class/drm/card1/device/power_dpm_force_performance_level
+echo "performance" > /sys/devices/system/cpu/cpu*/cpufreq/scaling_governor
+sudo sysctl -w kernel.preempt_lowlatency=1
 
 sudo update-grub
 
