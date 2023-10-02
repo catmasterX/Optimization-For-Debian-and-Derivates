@@ -30,10 +30,6 @@ echo "vm.swappiness=10" | sudo tee -a /etc/sysctl.conf
 echo "vm.vfs_cache_pressure=50" | sudo tee -a /etc/sysctl.conf
 sudo sysctl -p
 
-# Deshabilita servicios innecesarios
-sudo systemctl disable bluetooth
-sudo systemctl disable cups
-
 # Deshabilita la resolución de nombres mDNS (puede mejorar la velocidad de red)
 echo "DNSSEC=no" | sudo tee -a /etc/systemd/resolved.conf
 sudo systemctl restart systemd-resolved
