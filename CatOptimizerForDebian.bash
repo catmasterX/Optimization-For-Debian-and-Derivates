@@ -64,6 +64,8 @@ done
 # Liberar memoria RAM
 echo "Liberando memoria RAM..."
 sync; echo 3 > /proc/sys/vm/drop_caches
+sudo apt install earlyoom
+sudo systemctl enable earlyoom
 
 # Desactivar servicios innecesarios (ajusta según tu distribución)
 # systemctl disable <nombre_del_servicio>
