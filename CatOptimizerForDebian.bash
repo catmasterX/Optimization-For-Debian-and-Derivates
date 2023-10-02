@@ -15,7 +15,7 @@ sudo apt autoremove -y
 sudo apt clean
 
 # Aumenta la cantidad de inodos reservados para mejorar el rendimiento del sistema de archivos
-sudo tune2fs -m 1 /dev/sda1
+sudo tune2fs -m 1 /dev/sdX
 
 # Aumenta el límite de archivos abiertos para permitir más conexiones simultáneas
 echo "*                -    nofile        65535" | sudo tee -a /etc/security/limits.conf
@@ -38,7 +38,6 @@ sudo systemctl restart systemd-resolved
 sudo systemctl enable fstrim.timer
 
 # Desactivar el inicio de algunos servicios al arrancar el sistema
-
 systemctl disable cups
 systemctl disable bluetooth
 
