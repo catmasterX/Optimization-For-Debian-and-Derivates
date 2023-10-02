@@ -37,10 +37,6 @@ sudo systemctl restart systemd-resolved
 # Habilita TRIM para unidades SSD
 sudo systemctl enable fstrim.timer
 
-# Desactivar el inicio de algunos servicios al arrancar el sistema
-systemctl disable cups
-systemctl disable bluetooth
-
 # Deshabilita el informe de errores automáticos
 sudo sed -i 's/enabled=1/enabled=0/' /etc/default/apport
 
